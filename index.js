@@ -32,10 +32,11 @@ Straight.prototype.patch = function (custom, force) {
 
     function patchFunction(event) {
       var stack = Array.prototype.slice.call(arguments, 1);
-      var index = 0;
       // import global before functions
       stack = before.concat(stack).concat(after);
       var listener = function () {
+        // reset index every time
+        var index = 0;
         // define request object
         var req = {};
         req.event = event;
