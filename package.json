@@ -23,5 +23,12 @@
   "bugs": {
     "url": "https://github.com/bossonchan/straight-io/issues"
   },
-  "homepage": "https://github.com/bossonchan/straight-io"
+  "homepage": "https://github.com/bossonchan/straight-io",
+  "dependencies": {
+    "socket.io": "^1.1.0"
+  },
+  "devDependencies": {
+    "should": "^4.0.4",
+    "socket.io-client": "^1.1.0"
+  }
 }
