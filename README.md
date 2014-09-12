@@ -9,7 +9,7 @@ Installation & Test
 ------------
 
 ```
-npm install && npm test
+npm install straight-io
 ```
 
 Example
