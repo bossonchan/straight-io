@@ -1,29 +1,27 @@
 {
   "name": "straight-io",
   "version": "0.0.1",
-  "description": "A socket.io framework, using the idea of middleware, to make sequential processing more easily.",
+  "description": "A simple socket.io framework, using the idea of middleware, to make sequential processing easier",
   "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
   "scripts": {
     "test": "mocha -R spec test"
   },
   "repository": {
     "type": "git",
-    "url": "git@222.200.181.218:rc-back/straight-io.git"
+    "url": "https://github.com/bossonchan/straight-io.git"
   },
   "keywords": [
     "socket.io",
-    "framework",
     "middleware",
-    "patch"
+    "framework"
   ],
-  "author": "Shin",
+  "author": "bossonchan",
   "license": "MIT",
-  "dependencies": {
-    "socket.io": "^1.1.0"
+  "bugs": {
+    "url": "https://github.com/bossonchan/straight-io/issues"
   },
-  "devDependencies": {
-    "express": "^4.9.0",
-    "should": "^4.0.4",
-    "socket.io-client": "^1.1.0"
-  }
+  "homepage": "https://github.com/bossonchan/straight-io"
 }
