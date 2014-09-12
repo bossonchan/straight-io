@@ -1,6 +1,6 @@
 {
   "name": "straight-io",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A simple socket.io framework, using the idea of middleware, to make sequential processing easier",
   "main": "index.js",
   "directories": {
