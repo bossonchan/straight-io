@@ -63,6 +63,7 @@ Straight.prototype.patch = function (custom, force) {
     }
     return patchFunction;
   });
+  return this;
 };
 
 Straight.prototype.before = function (handler) {
