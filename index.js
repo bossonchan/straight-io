@@ -40,7 +40,7 @@ Straight.prototype.patch = function (custom, force) {
         // define request object
         var req  = {};
         var args = Array.prototype.slice.call(arguments);
-        var ack  = args[args - 1];
+        var ack  = args[args.length - 1];
         req.event = event;
         req.ack   = typeof ack === "function" ? ack : null;
         req.data  = req.ack ? args.slice(0, -1) : args;

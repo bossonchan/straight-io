@@ -26,14 +26,25 @@ describe("Straight IO", function () {
     it("should register event in new way successfully", function (done) {
       var pair = getServerAndClient();
       pair.io.on("connection", function (socket) {
-        socket.register("for test", function (socket, req, next) {
-          req.should.have.property("event", "for test");
-          req.should.have.property("data", ["test message"]);
-          next.should.be.Function;
-          done();
+        socket.register("for test with ack", function (socket, req, next) {
+          req.should.have.property("event", "for test with ack");
+          req.should.have.property("ack");
+          req.ack.should.be.a.Function;
+          req.ack(); // trigger next event
+
+          socket.register("for test", function (socket, req, next) {
+            req.should.have.property("event", "for test");
+            req.should.have.property("ack", null);
+            req.should.have.property("data", ["test message"]);
+            next.should.be.Function;
+            done();
+          });
+
         });
       });
-      pair.cio.emit("for test", "test message");
+      pair.cio.emit("for test with ack", function () {
+        pair.cio.emit("for test", "test message");
+      });
     });
   });
 
