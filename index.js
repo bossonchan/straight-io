@@ -38,9 +38,13 @@ Straight.prototype.patch = function (custom, force) {
         // reset index every time
         var index = 0;
         // define request object
-        var req = {};
+        var req  = {};
+        var args = Array.prototype.slice.call(arguments);
+        var ack  = args[args - 1];
         req.event = event;
-        req.data  = Array.prototype.slice.call(arguments);
+        req.ack   = typeof ack === "function" ? ack : null;
+        req.data  = req.ack ? args.slice(0, -1) : args;
+
         // define next function
         var next = function (error) {
           var middleware = stack[index++];
