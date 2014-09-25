@@ -31,12 +31,19 @@ Straight.prototype.patch = function (custom, force) {
     var after  = straight.afterHooks;
 
     function patchFunction(event) {
-      var stack = Array.prototype.slice.call(arguments, 1);
+      var handlers = Array.prototype.slice.call(arguments, 1);
+
+      for (var i = 0, len = handlers.length; i < len; i++) {
+        var handler = handlers[i];
+        if (typeof handler !== "function") throw new Error("middleware should be a function");
+      }
+
       // import global before functions
-      stack = before.concat(stack).concat(after);
       var listener = function () {
-        // reset index every time
+        // reset index and stack every time
         var index = 0;
+        var stack = before.concat(handlers).concat(after);
+
         // define request object
         var req  = {};
         var args = Array.prototype.slice.call(arguments);
@@ -47,20 +54,34 @@ Straight.prototype.patch = function (custom, force) {
 
         // define next function
         var next = function (error) {
-          var middleware = stack[index++];
           if (error) {
             error = error instanceof Error ? error : new Error(error);
             return errorHandler(error, socket, req);
+          }
+
+          var middleware = stack[index++];
+          if (!middleware) {
+            next("No Middleware!");
           } else {
-            if (!middleware) {
-              next("No Middleware!");
-            } else if (typeof middleware !== "function") {
-              next();
-            } else {
-              middleware(socket, req, next);
+            try {
+              middleware(socket, req, canCallOnlyOneTime(next));
+            } catch(e) {
+              errorHandler(error, socket, req);
             }
           }
         };
+
+        function canCallOnlyOneTime(fn) {
+          var isCalled = false;
+          return function () {
+            if (isCalled) {
+            } else {
+              isCalled = true;
+              fn.apply(null, arguments);
+            }
+          };
+        }
+
         next();
       };
       socket.on(event, listener);
@@ -71,16 +92,19 @@ Straight.prototype.patch = function (custom, force) {
 };
 
 Straight.prototype.before = function (handler) {
+  if (typeof handler !== "function") throw new Error("middleware should be a function");
   this.beforeHooks.push(handler);
   return this;
 };
 
 Straight.prototype.after  = function (handler) {
+  if (typeof handler !== "function") throw new Error("middleware should be a function");
   this.afterHooks.push(handler);
   return this;
 };
 
 Straight.prototype.error  = function (errorHandler) {
+  if (typeof errorHandler !== "function") throw new Error("errorHandler should be a function");
   this.errorHandler = errorHandler;
   return this;
 };
