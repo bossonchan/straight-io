@@ -63,11 +63,7 @@ Straight.prototype.patch = function (custom, force) {
           if (!middleware) {
             next("No Middleware!");
           } else {
-            try {
-              middleware(socket, req, canCallOnlyOneTime(next));
-            } catch(e) {
-              errorHandler(error, socket, req);
-            }
+            middleware(socket, req, canCallOnlyOneTime(next));
           }
         };
 
